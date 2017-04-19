@@ -44,6 +44,7 @@ body{
     border-top-left-radius: 4px;
     animation-duration: 1s;
     animation-fill-mode: forwards;
+    
 }
 
 
@@ -68,5 +69,5 @@ body{
 }
 
 .chat-popup .chat-body{
-    display: none;
+ display: none;
 }
