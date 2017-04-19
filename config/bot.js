@@ -11,7 +11,7 @@
  *
  */
 var watson = require('watson-developer-cloud');
-var CONVERSATION_NAME = ""; // conversation name goes here.
+var CONVERSATION_NAME = "Conversation-Demo"; // conversation name goes here.
 var cfenv = require('cfenv');
 var chrono = require('chrono-node');
 var fs = require('fs');
@@ -88,7 +88,7 @@ function initCloudant() {
 // =====================================
 // Create the service wrapper
 function initConversation() {
-    var conversationCredentials = appEnv.getServiceCreds("watson-bot-conversation");
+    var conversationCredentials = appEnv.getServiceCreds("Conversation-Demo");
     console.log(conversationCredentials);
     var conversationUsername = process.env.CONVERSATION_USERNAME || conversationCredentials.username;
     var conversationPassword = process.env.CONVERSATION_PASSWORD || conversationCredentials.password;

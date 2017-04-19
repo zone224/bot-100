@@ -118,3 +118,6 @@ function displayMessage(text, user) {
     chat_body.appendChild(bubble);
     chat_body.scrollTop = chat_body.scrollHeight;
 }
+
+
+userMessage('');

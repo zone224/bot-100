@@ -7,7 +7,7 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     fs = require('fs');
-
+var cfenv = require('cfenv');
 
 var chatbot = require('./config/bot.js');
 
