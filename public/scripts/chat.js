@@ -14,16 +14,20 @@ $(document).ready(function () {
     var isOpen = false;
     $('.chat-header').click(function () {
         if (isOpen) {
+            isOpen = false;
             $('.chat-popup').css({
                 "animation-name": "popup_close"
             });
-            isOpen = false;
+            $('.chat-body').animate({opacity:0});
+            $('.chat-body').css({"display":"none"});
         }
         else {
             isOpen = true;
             $('.chat-popup').css({
                 "animation-name": "popup_open"
             });
+            $('.chat-body').css({"animation-name":"show_chat"});
+//            $('.chat-body').css({"display":"block"});
         }
     });
 });

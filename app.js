@@ -6,12 +6,7 @@ var express = require('express'),
     routes = require('./routes'),
     http = require('http'),
     path = require('path'),
-    fs = require('fs'),
-    json2csv = require('json2csv'),
-    Promise = require('bluebird'),
-    request = Promise.promisifyAll(require('request'), {
-        multiArgs: true
-    });
+    fs = require('fs');
 
 
 
@@ -36,7 +31,6 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
-app.use(logger('dev'));
 app.use(bodyParser.urlencoded({
     extended: true
 }));

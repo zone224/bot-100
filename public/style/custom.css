@@ -1,40 +1,43 @@
-html,body{
+html,
+body {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
-body{
-    background-image: url(../images/bg.jpg);
+body {
+    background-image: url(../images/IBM_Watson.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
-.container{
+
+.container {
     
 }
 
-.header{
+.header {
     height: 10%;
     color: #fff;
     text-align: center;
 }
-.main{
+
+.main {
     height: 80%;
     text-align: center;
     color: #fff;
 }
 
-.footer{
+.footer {
     height: 10%;
     text-align: center;
     color: #fff;
 }
 
-.chat-popup{
+.chat-popup {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -44,20 +47,28 @@ body{
     border-top-left-radius: 4px;
     animation-duration: 1s;
     animation-fill-mode: forwards;
-    
+    overflow: hidden;
 }
 
-
-@keyframes popup_open{
-    from{height: 40px;}
-    to{height: 75%}
+@keyframes popup_open {
+    from {
+        height: 40px;
+    }
+    to {
+        height: 75%
+    }
 }
-@keyframes popup_close{
-    from{height: 75%;}
-    to{height: 40px}
+
+@keyframes popup_close {
+    from {
+        height: 75%;
+    }
+    to {
+        height: 40px
+    }
 }
 
-.chat-popup .chat-header{
+.chat-popup .chat-header {
     background-color: #e6e6e6;
     height: 40px;
     border-top-left-radius: 4px;
@@ -68,6 +79,12 @@ body{
     width: 100%;
 }
 
-.chat-popup .chat-body{
- display: none;
+.chat-popup .chat-body {
+    opacity: 0;
+    animation-duration: 2s;
+    animation-fill-mode: forwards
+}
+@keyframes show_chat{
+    from{opacity: 0;}
+    to{opacity: 1;}
 }
