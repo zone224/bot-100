@@ -19,9 +19,12 @@
         </div>
         <div class="chat-popup" id="chat-popup">
             <div class="chat-header" >Chat with Watson!</div>
-            <div class="chat-body">
-                <div class="bubble watson">How can i help you?</div>
-                <div class="bubble user">How are you?!</div>
+            <div class="chat-body" id="chat-body">
+<!--                <div class="chat-date"><span>Today, 2:22 PM</span></div>-->
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="chatInput" placeholder="Type a message.." onkeypress="return newEvent(event)"/>
+                <a href="javascript:;" class="send-btn"></a>
             </div>
         </div>
         

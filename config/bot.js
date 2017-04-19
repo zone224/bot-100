@@ -11,7 +11,7 @@
  *
  */
 var watson = require('watson-developer-cloud');
-var CONVERSATION_NAME = "";// conversation name goes here.
+var CONVERSATION_NAME = ""; // conversation name goes here.
 var cfenv = require('cfenv');
 var chrono = require('chrono-node');
 var fs = require('fs');
@@ -45,7 +45,7 @@ function initializeAppEnv() {
         require('dotenv').load();
     }
     if (appEnv.services.cloudantNoSQLDB) {
-        initCloudant();
+        //        initCloudant(); No cloudant for the moment
     }
     else {
         console.error("No Cloudant service exists.");
@@ -88,7 +88,7 @@ function initCloudant() {
 // =====================================
 // Create the service wrapper
 function initConversation() {
-    var conversationCredentials = appEnv.getServiceCreds("bv-bot-conversation");
+    var conversationCredentials = appEnv.getServiceCreds("watson-bot-conversation");
     console.log(conversationCredentials);
     var conversationUsername = process.env.CONVERSATION_USERNAME || conversationCredentials.username;
     var conversationPassword = process.env.CONVERSATION_PASSWORD || conversationCredentials.password;
@@ -104,7 +104,7 @@ function initConversation() {
     conversationWorkspace = process.env.CONVERSATION_WORKSPACE;
     // if not, look it up by name or create one
     if (!conversationWorkspace) {
-        const workspaceName = CONVERSATION_NAME;// Workspace name goes here.
+        const workspaceName = CONVERSATION_NAME; // Workspace name goes here.
         console.log('No conversation workspace configured in the environment.');
         console.log(`Looking for a workspace named '${workspaceName}'...`);
         conversation.listWorkspaces((err, result) => {
@@ -118,12 +118,12 @@ function initConversation() {
                     console.log("Using Watson Conversation with username", conversationUsername, "and workspace", conversationWorkspace);
                 }
                 else {
-                    console.log('Importing workspace from ./conversation/bot.json');
+                    console.log('Importing workspace from ./conversation/watson.json');
                     // create the workspace
-                    const bvWorkspace = JSON.parse(fs.readFileSync('./conversation/bot.json'));
+                    const watsonWorkspace = JSON.parse(fs.readFileSync('./conversation/watson.json'));
                     // force the name to our expected name
-                    bvWorkspace.name = workspaceName;
-                    conversation.createWorkspace(bvWorkspace, (createErr, workspace) => {
+                    watsonWorkspace.name = workspaceName;
+                    conversation.createWorkspace(watsonWorkspace, (createErr, workspace) => {
                         if (createErr) {
                             console.log('Failed to create workspace', err);
                         }
@@ -149,158 +149,52 @@ var request = require('request');
 // Allow clients to interact
 var chatbot = {
     sendMessage: function (req, callback) {
-        var owner = req.user.username;
+//        var owner = req.user.username;
         buildContextObject(req, function (err, params) {
-            if (err) {
-                console.log("Error in building the parameters object: ", err);
-                return callback(err);
-            }
-            if (params.message) {
-                var conv = req.body.context.conversation_id;
-                var context = req.body.context;
-                var res = {
-                    intents: []
-                    , entities: []
-                    , input: req.body.text
-                    , output: {
-                        text: params.message
-                    }
-                    , context: context
-                };
-                chatLogs(owner, conv, res, () => {
-                    return callback(null, res);
-                });
-            }
-            else if (params) {
-                // Send message to the conversation service with the current context
-                conversation.message(params, function (err, data) {
-                    if (err) {
-                        console.log("Error in sending message: ", err);
-                        return callback(err);
-                    }
-                    var conv = data.context.conversation_id;
-                    if (data['context']['carro'] && data['context']['modelo'] && data['context']['flag']) {
-                        var options = {
-                            url: "https://newcar-api.mybluemix.net/veiculo?model=" + data['context']['modelo']
-                            , headers: {
-                                Accept: 'text/json'
-                            }
-                        };
-
-                        function callback2(error, response, body) {
-                            console.log('error: '+error+' status: '+response.statusCode);
-                            if (!error && response.statusCode == 200) {
-                                var info = JSON.parse(body);
-                                if (info != undefined && info != " ") {
-                                    console.log("Got response from Ana: ", JSON.stringify(data));
-                                    var len = (info.length >= 3) ? 3 : info.length;
-                                    console.log('length ' + len);
-                                    var result = [];
-                                    for (var i = 0; i < len; i++) {
-                                        result[i] = info[i];
-                                    }
-                                    console.log('result: ' + result);
-                                    data['cars'] = result;
-                                    delete data['context']['carro'];
-                                    delete data['context']['modelo'];
-                                    if(data['cars'].length ==0) data['context']['cnf'] = true;
-                                    if (data.context.system.dialog_turn_counter > 1) {
-                                        chatLogs(owner, conv, data, () => {
-                                            return callback(null, data);
-                                        });
-                                    }
-                                    else {
-                                        return callback(null, data);
-                                    }
-                                }
-                            }
-                            else {
-                                console.log('error: '+error);
-                                data['context']['cnf'] = true;
-                                delete data['context']['carro'];
-                                delete data['context']['modelo'];
-                                if (data.context.system.dialog_turn_counter > 1) {
-                                    chatLogs(owner, conv, data, () => {
-                                        return callback(null, data);
-                                    });
-                                }
-                                else {
-                                    return callback(null, data);
-                                }
-                            }
+                if (err) {
+                    console.log("Error in building the parameters object: ", err);
+                    return callback(err);
+                }
+                if (params.message) {
+                    var conv = req.body.context.conversation_id;
+                    var context = req.body.context;
+                    var res = {
+                        intents: []
+                        , entities: []
+                        , input: req.body.text
+                        , output: {
+                            text: params.message
                         }
-                        request(options, callback2);
-                    }
-                    else if (data['context']['period'] && data['context']['entry'] && data['context']['trigger']) {
-                        var entry = data['context']['entry'];
-                        if(entry.toString().indexOf('%') != -1){
-                            entry = parseFloat(entry.slice(0,entry.toString().indexOf('%')))*data['context']['preco'] / 100;
-                        }
-                        var options2 = {
-                            url: "https://voto-sample.mybluemix.net/sample?period=" + data['context']['period'] + "&entry=" + entry + "&total=" + data['context']['preco'], // temos que setar o carro escolhido e depois escolher ele no vetor info[i][3] que retorna o preco para a api de financiamento
-                            headers: {
-                                Accept: 'text/json'
-                            }
-                        };
-
-                        function callback3(error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                var result = JSON.parse(body);
-                                data['context']['result'] = result['result'];
-                                if (data.context.system.dialog_turn_counter > 1) {
-                                    chatLogs(owner, conv, data, () => {
-                                        return callback(null, data);
-                                    });
-                                }
-                                else {
-                                    return callback(null, data);
-                                }
-                            }
-                            else {
-                                console.log(error);
-                            }
-                        }
-                        request(options2, callback3);
-                    }
-                    else if (data['context']['pessoal'] && data['context']['calcular']) {
-                        var options4 = {
-                            url: "https://voto-sample.mybluemix.net/pessoal?periodo=" + data['context']['periodo'] + "&valor=" + data['context']['valor']
-                            , headers: {
-                                Accept: 'text/json'
-                            }
-                        };
-
-                        function callback4(error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                var result = JSON.parse(body);
-                                data['context']['result'] = result['result'];
-                                if (data.context.system.dialog_turn_counter > 1) {
-                                    chatLogs(owner, conv, data, () => {
-                                        return callback(null, data);
-                                    });
-                                }
-                                else {
-                                    return callback(null, data);
-                                }
-                            }
-                        }
-                        request(options4, callback4);
-                    }
-                    else {
-                        console.log("Got response from Ana: ", JSON.stringify(data));
-                        if (data.context.system.dialog_turn_counter > 1) {
-                            chatLogs(owner, conv, data, () => {
+                        , context: context
+                    };
+                    //                chatLogs(owner, conv, res, () => {
+                    //                    return 
+                    callback(null, res);
+                    //                });
+                }
+                else if (params) {
+                    // Send message to the conversation service with the current context
+                    conversation.message(params, function (err, data) {
+                            if (err) {
+                                console.log("Error in sending message: ", err);
+                                return callback(err);
+                            }else{
+                                
+                            var conv = data.context.conversation_id;
+                            console.log("Got response from Ana: ", JSON.stringify(data));
+//                            if (data.context.system.dialog_turn_counter > 1) {
+//                                chatLogs(owner, conv, data, () => {
+//                                    return callback(null, data);
+//                                });
+//                            }
+//                            else {
                                 return callback(null, data);
-                            });
+//                            }
                         }
-                        else {
-                            return callback(null, data);
-                        }
-                    }
-                });
+                    });
             }
         });
-    }
+}
 };
 // ===============================================
 // LOG MANAGEMENT FOR USER INPUT FOR ANA =========
@@ -382,7 +276,7 @@ function chatLogs(owner, conversation, response, callback) {
  */
 function buildContextObject(req, callback) {
     var message = req.body.text;
-    var userTime = req.body.user_time;
+//    var userTime = req.body.user_time;
     var context;
     if (!message) {
         message = '';
@@ -393,9 +287,8 @@ function buildContextObject(req, callback) {
         , input: {}
         , context: {}
     };
-    var reprompt = {
-        message: ''
-    , };
+
+    
     if (req.body.context) {
         context = req.body.context;
         params.context = context;
@@ -408,12 +301,12 @@ function buildContextObject(req, callback) {
         text: message // User defined text to be sent to service
     };
     // This is the first message, add the user's name and get their healthcare object
-    if ((!message || message === '') && !context) {
-        params.context = {
-            fname: req.user.fname
-            , lname: req.user.lname
-        };
-    }
+//    if ((!message || message === '') && !context) {
+//        params.context = {
+//            fname: req.user.fname
+//            , lname: req.user.lname
+//        };
+//    }
     return callback(null, params);
 }
 module.exports = chatbot;

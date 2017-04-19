@@ -9,6 +9,8 @@ var express = require('express'),
     fs = require('fs');
 
 
+var chatbot = require('./config/bot.js');
+
 
 var app = express();
 
@@ -80,6 +82,77 @@ function initDBConnection() {
 //initDBConnection();
 
 app.get('/', routes.chat);
+
+
+
+// load local VCAP configuration
+var vcapLocal = null
+if (require('fs').existsSync('./vcap-local.json')) {
+    try {
+        vcapLocal = require("./vcap-local.json");
+        console.log("Loaded local VCAP", vcapLocal);
+    }
+    catch (e) {
+        console.error(e);
+    }
+}
+
+// get the app environment from Cloud Foundry, defaulting to local VCAP
+var appEnvOpts = vcapLocal ? {
+    vcap: vcapLocal
+} : {}
+var appEnv = cfenv.getAppEnv(appEnvOpts);
+var appName;
+if (appEnv.isLocal) {
+    require('dotenv').load();
+}
+
+
+
+
+
+
+// =====================================
+// WATSON CONVERSATION FOR ANA =========
+// =====================================
+app.post('/api/watson', function (req, res) {
+    processChatMessage(req, res);
+}); // End app.post 'api/ana'
+function processChatMessage(req, res) {
+    chatbot.sendMessage(req, function (err, data) {
+        if (err) {
+            console.log("Error in sending message: ", err);
+            res.status(err.code || 500).json(err);
+        }
+        else {
+//            Logs.find({
+//                selector: {
+//                    'conversation': data.context.conversation_id
+//                }
+//            }, function (err, result) {
+//                if (err) {
+//                    console.log("Cannot find log for conversation id of ", data.context.conversation_id);
+//                }
+//                else if (result.docs.length > 0) {
+//                    var doc = result.docs[0];
+//                    console.log("Sending log updates to dashboard");
+                    //console.log("doc: ", doc);
+//                    io.sockets.emit('logDoc', doc);
+//                }
+//                else {
+//                    console.log("No log file found.");
+//                }
+//            });
+            var context = data.context;
+//            var owner = req.user.username;
+            res.status(200).json(data);
+        }
+    });
+}
+
+
+
+
 
 
 http.createServer(app).listen(app.get('port'), '0.0.0.0', function() {

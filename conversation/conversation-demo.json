@@ -1,1 +1,13 @@
-{"name":"Conversation-Demo","created":"2017-04-19T13:01:08.628Z","intents":[],"updated":"2017-04-19T13:01:08.628Z","entities":[],"language":"en","metadata":null,"description":"This is only the template for the conversation, please change the name, description and language.","dialog_nodes":[],"workspace_id":"1192ecbb-ec45-4f9c-90b6-6e44293a25c1","counterexamples":[]}
+{
+    "name": "Conversation-Demo"
+    , "created": "2017-04-19T13:01:08.628Z"
+    , "intents": []
+    , "updated": "2017-04-19T13:01:08.628Z"
+    , "entities": []
+    , "language": "en"
+    , "metadata": null
+    , "description": "This is only the template for the conversation, please change the name, description and language."
+    , "dialog_nodes": []
+    , "workspace_id": "1192ecbb-ec45-4f9c-90b6-6e44293a25c1"
+    , "counterexamples": []
+}
