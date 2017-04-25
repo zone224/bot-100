@@ -118,9 +118,9 @@ function initConversation() {
                     console.log("Using Watson Conversation with username", conversationUsername, "and workspace", conversationWorkspace);
                 }
                 else {
-                    console.log('Importing workspace from ./conversation/watson.json');
+                    console.log('Importing workspace from ./conversation/conversation-demo.json');
                     // create the workspace
-                    const watsonWorkspace = JSON.parse(fs.readFileSync('./conversation/watson.json'));
+                    const watsonWorkspace = JSON.parse(fs.readFileSync('./conversation/conversation-demo.json'));
                     // force the name to our expected name
                     watsonWorkspace.name = workspaceName;
                     conversation.createWorkspace(watsonWorkspace, (createErr, workspace) => {
