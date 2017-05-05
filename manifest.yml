@@ -6,4 +6,3 @@ applications:
   name: ibm-100-demo
   host: ibm-100-demo
   disk_quota: 1024M
-  services:
