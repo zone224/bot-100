@@ -9,32 +9,28 @@ body {
 }
 
 body {
-    background-image: url(../images/bg.jpg);
+    background-image: url(../images/ibm.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow: hidden;
+}
+
+
+a {
+    text-decoration: none;
+    color: white;
 }
 
 .container {}
 
-.header {
-    height: 10%;
-    color: #fff;
-    text-align: center;
-}
-
 .main {
-    height: 80%;
+    height: 100%;
     text-align: center;
-    color: #fff;
-}
-
-.footer {
-    height: 10%;
-    text-align: center;
-    color: #fff;
+    color: white;
 }
 
 .chat-popup {
@@ -42,41 +38,21 @@ body {
     right: 0;
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.22);
-    width: 310px;
-    height: 40px;
+    width: 100%;
+    height: 100%;
     border-top-left-radius: 4px;
     animation-duration: 1s;
     animation-fill-mode: forwards;
-    overflow: hidden;
     animation-name: popup_open;
     border-width: 1px 1px 0px 1px;
     border-style: solid;
     border-color: #e6e6e6;
     flex-direction: column;
     justify-content: space-between;
-    
-}
-
-@keyframes popup_open {
-    from {
-        height: 40px;
-    }
-    to {
-        height: 75%;
-    }
-}
-
-@keyframes popup_close {
-    from {
-        height: 75%;
-    }
-    to {
-        height: 40px
-    }
 }
 
 .chat-popup .chat-header {
-    background-color: #e6e6e6;
+    background-color: #98A9CE;
     height: 40px;
     border-top-left-radius: 4px;
     display: flex;
@@ -97,12 +73,13 @@ body {
     justify-content: flex-start;
     height: 80%;
     overflow-y: scroll;
-    padding-top: 10px;
-    
+    padding-top: 20px;
 }
 
+
 /* Remove scroll bar in chat box */
-.chat-popup .chat-body::-webkit-scrollbar{
+
+.chat-popup .chat-body::-webkit-scrollbar {
     visibility: hidden;
 }
 
@@ -128,19 +105,21 @@ body {
     }
 }
 
-.chat-popup .chat-body .chat-date{
+.chat-popup .chat-body .chat-date {
     text-align: center;
     width: 100%;
     margin-bottom: 10px;
 }
-.chat-popup .chat-body .chat-date span{
+
+.chat-popup .chat-body .chat-date span {
     font-size: 14px;
     display: inline-block;
     color: #bebebe;
     width: 100%;
 }
 
-.chat-popup .chat-body .chat-date span:before, .chat-popup .chat-body .chat-date span:after{
+.chat-popup .chat-body .chat-date span:before,
+.chat-popup .chat-body .chat-date span:after {
     display: inline-block;
     width: 30%;
     height: 1px;
@@ -148,11 +127,13 @@ body {
     content: '';
     background-color: #c3c3c3;
 }
-.chat-popup .chat-body .chat-date span:before{
+
+.chat-popup .chat-body .chat-date span:before {
     margin-right: 2px;
     left: 0;
 }
-.chat-popup .chat-body .chat-date span:after{
+
+.chat-popup .chat-body .chat-date span:after {
     right: 0;
     margin-left: 2px;
 }
@@ -163,9 +144,7 @@ body {
     margin-bottom: 10px;
     font-size: 14px;
     max-width: 78%;
-    
 }
-
 
 .chat-popup .chat-body .bubble:before {
     width: 8px;
@@ -179,14 +158,14 @@ body {
 
 .chat-popup .chat-body .bubble.watson {
     color: #fff;
-    background-color: #00b0ff;
+    background-color: #AEC0E0;
     align-self: flex-start;
     margin-left: 20px;
 }
 
 .chat-popup .chat-body .bubble.watson:before {
     left: -18px;
-    background-color: #00b0ff;
+    background-color: #AEC0E0;
 }
 
 .chat-popup .chat-body .bubble.user:before {
@@ -202,11 +181,9 @@ body {
     margin-right: 20px;
 }
 
-
-.chat-footer{
+.chat-footer {
     position: absolute;
     bottom: 0;
-    
     z-index: -1;
     opacity: 0;
     animation-duration: 2s;
@@ -215,28 +192,35 @@ body {
     animation-name: show_chat;
     border: 1px solid #e6e6e6;
     background-color: #eceff1;
-    font-family: 'Source Sans Pro',sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
     font-size: 16px;
-    height: 32px;
+    height: 42px;
     display: flex;
     flex-direction: row;
 }
-.chat-footer input{
+
+.chat-footer input {
     color: #1a1a1a;
     border: 0;
     background-color: #eceff1;
     padding: 0 10px;
     outline: none;
-    width: 80%;
+    width: 100%;
 }
 
-.chat-footer .send-btn{
-    width: 20%;
-    content: 'a';
-    display: inline-block;
-    background-image: url(../images/send.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 32px;
+
+
+@media only screen and (max-width: 500px) {
+    body{
+        background-size: 180% 100%;
+    }
+    .chat-footer input {
+        color: #1a1a1a;
+        border: 0;
+        background-color: #eceff1;
+        padding: 0 10px;
+        outline: none;
+        width: 100%;
+    }
 }

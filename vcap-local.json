@@ -3,11 +3,11 @@
     "conversation": [
       {
         "label": "conversation",
-        "name": "Conversation-Demo",
+        "name": "conversation-other",
         "credentials": {
             "url": "https://gateway.watsonplatform.net/conversation/api",
-            "password": "ta1JvHpfbTAX",
-            "username": "2f4b1cb3-4a96-4a98-beee-b3c4330c3e1d"
+            "password": "yVZtbQb0XLlL",
+            "username": "db57b53c-799c-414b-a5a3-8368bdfe4e3f"
         }
       }
     ]

@@ -1,48 +1,12 @@
-//var isOpen = false;
-//function popupToggle(){
-//    var popup = document.getElementById("chat-popup");
-//    if(isOpen){
-//        popup.style.animationName = "popup_close";
-//        isOpen = false;
-//    }else{
-//        popup.style.animationName = "popup_open";
-//        isOpen = true;
-//    }
-//}
-$(document).ready(function () {
-    var isOpen = false;
-    $('.chat-header').click(function () {
-        if (isOpen) {
-            isOpen = false;
-            $('.chat-popup').css({
-                "animation-name": "popup_close"
-            });
-            $('.chat-body').css({
-                "animation-name": "hide_chat"
-            });
-            $('.chat-footer').css({
-                "animation-name": "hide_chat"
-            });
-        }
-        else {
-            isOpen = true;
-            $('.chat-popup').css({
-                "animation-name": "popup_open"
-            });
-            $('.chat-body').css({
-                "animation-name": "show_chat"
-            });
-            $('.chat-footer').css({
-                "animation-name": "show_chat"
-            });
-        }
-    });
-});
-
-
 var params = {},
     watson = 'Watson',
     context;
+
+
+var lat;
+var long;
+getLocation();
+
 
 function userMessage(message) {
     
@@ -62,6 +26,21 @@ function userMessage(message) {
             context = response.context; // Store the context for next round of questions
             console.log("Got response from Ana: ", JSON.stringify(response));
            
+            if(response['context']['map']){
+                displayMaps(watson);
+                delete response['context']['map'];
+                console.log("Mapa");
+            }
+            
+            if (response['context']['uri'] && response['context']['uri'].length > 0) {
+                displaySpotify(response['context']['uri'], watson);
+                delete response['context']['musica'];
+                delete response['context']['uri'];
+                
+            }
+            
+            
+            
             for (var txt in text) {
                 displayMessage(text[txt], watson);
             }
@@ -119,5 +98,43 @@ function displayMessage(text, user) {
     chat_body.scrollTop = chat_body.scrollHeight;
 }
 
+function displayMaps(watson) {
+    var chat_body = document.getElementById('chat-body');
+    var bubble = document.createElement('div');
+        bubble.innerHTML += '<iframe width = "350px" height = "170px" frameborder = "0" style="border:0;" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCzFkRQ3y5QUWILwMttySU7MFGS-mWakOw&q=UFABC&zoom=12" allowfullscreen></iframe>';
+    chat_body.appendChild(bubble);
+    chat_body.scrollTop = chat_body.scrollHeight; // Move chat down to the last message displayed
+    document.getElementById('chatInput').focus();
+}
 
+
+
+function displaySpotify(uri, watson) {
+    uri = uri.replace(new RegExp('\\"', "g"), "");
+    var chat_body = document.getElementById('chat-body');
+    var bubble = document.createElement('div');
+    var main = document.getElementById('main');
+    bubble.innerHTML += '<iframe src="https://embed.spotify.com/?uri=' + uri + '" width="270" height="80" frameborder="0" allowtransparency="true"></iframe>';
+    chat_body.appendChild(bubble);
+    chat_body.scrollTop = chat_body.scrollHeight; // Move chat down to the last message displayed
+    document.getElementById('chatInput').focus();
+}
+
+
+function getLocation() {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    lat = navigator.latitude;
+    long = navigator.longitude;
+}
+
+function showPosition(position) {
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
+}
+
+
+
+context = {
+    "timezone": "America/Sao_Paulo"
+  };
 userMessage('');

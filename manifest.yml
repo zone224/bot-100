@@ -3,8 +3,7 @@ applications:
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: conv-demo-bmx
-  host: conv-demo-bmx
+  name: ibm-100-demo
+  host: ibm-100-demo
   disk_quota: 1024M
   services:
-  - conv-demo-bmx-cloudantNoSQLDB
