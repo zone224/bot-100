@@ -8,16 +8,9 @@
   "dependencies": {
     "body-parser": "1.14.x",
     "cfenv": "^1.0.3",
-    "chrono-node": "*",
-    "cloudant": "1.4.x",
-    "connect-multiparty": "2.0.x",
     "dotenv": "*",
     "ejs": "2.4.x",
-    "errorhandler": "1.4.x",
     "express": "4.13.x",
-    "method-override": "2.3.x",
-    "morgan": "1.6.x",
-    "request": "^2.81.0",
     "watson-developer-cloud": "2.27.1"
   },
   "repository": {},

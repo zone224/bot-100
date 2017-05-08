@@ -3,7 +3,7 @@
     "conversation": [
       {
         "label": "conversation",
-        "name": "conversation-other",
+        "name": "ibm-100",
         "credentials": {
             "url": "https://gateway.watsonplatform.net/conversation/api",
             "password": "yVZtbQb0XLlL",
