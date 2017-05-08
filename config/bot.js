@@ -3,7 +3,7 @@
  * Ana and the Watson Conversation service. When API calls are not needed, the
  * functions also do basic messaging between the client and the server.
  *
- * @summary   Functions for Ana Chat Bot.
+ * @summary   Functions for Chat Bot.
  *
  * @link      cloudco.mybluemix.net
  * @since     0.0.3
@@ -11,7 +11,7 @@
  *
  */
 var watson = require('watson-developer-cloud');
-var CONVERSATION_NAME = "IEEEV2"; // conversation name goes here.
+var CONVERSATION_NAME = "ibm-100"; // conversation name goes here.
 var cfenv = require('cfenv');
 var chrono = require('chrono-node');
 var fs = require('fs');
@@ -61,7 +61,7 @@ var dbname = "logs";
 var Logs;
 
 function initCloudant() {
-    var cloudantURL = appEnv.services.cloudantNoSQLDB[0].credentials.url || appEnv.getServiceCreds("bv-bot-db").url;
+    var cloudantURL = appEnv.services.cloudantNoSQLDB[0].credentials.url || appEnv.getServiceCreds(CONVERSATION_NAME).url;
     var Cloudant = require('cloudant')({
         url: cloudantURL,
         plugin: 'retry',
@@ -83,7 +83,7 @@ function initCloudant() {
 // =====================================
 // Create the service wrapper
 function initConversation() {
-    var conversationCredentials = appEnv.getServiceCreds("conversation-other");
+    var conversationCredentials = appEnv.getServiceCreds(CONVERSATION_NAME);
     console.log(conversationCredentials);
     var conversationUsername = process.env.CONVERSATION_USERNAME || conversationCredentials.username;
     var conversationPassword = process.env.CONVERSATION_PASSWORD || conversationCredentials.password;
@@ -111,9 +111,9 @@ function initConversation() {
                     conversationWorkspace = workspace.workspace_id;
                     console.log("Using Watson Conversation with username", conversationUsername, "and workspace", conversationWorkspace);
                 } else {
-                    console.log('Importing workspace from ./conversation/conversation-demo.json');
+                    console.log('Importing workspace from ./conversation/bot-100.json');
                     // create the workspace
-                    const watsonWorkspace = JSON.parse(fs.readFileSync('./conversation/conversation-demo.json'));
+                    const watsonWorkspace = JSON.parse(fs.readFileSync('./conversation/bot-100.json'));
                     // force the name to our expected name
                     watsonWorkspace.name = workspaceName;
                     conversation.createWorkspace(watsonWorkspace, (createErr, workspace) => {
