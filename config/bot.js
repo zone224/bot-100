@@ -13,7 +13,6 @@
 var watson = require('watson-developer-cloud');
 var CONVERSATION_NAME = "ibm-100"; // conversation name goes here.
 var cfenv = require('cfenv');
-var chrono = require('chrono-node');
 var fs = require('fs');
 // load local VCAP configuration
 var vcapLocal = null;
@@ -133,7 +132,7 @@ function initConversation() {
         console.log("Using Watson Conversation with username", conversationUsername, "and workspace", conversationWorkspace);
     }
 }
-var request = require('request');
+
 // =====================================
 // REQUEST =====================
 // =====================================
