@@ -1,0 +1,15 @@
+{
+  "services": {
+    "conversation": [
+      {
+        "label": "conversation",
+        "name": "ibm-100",
+        "credentials": {
+            "url": "https://gateway.watsonplatform.net/conversation/api",
+            "password": "W3uUPfYhDpFM",
+            "username": "db3ff56f-18cf-4b9d-9f0f-0772082b54fb"
+        }
+      }
+    ]
+  }
+}

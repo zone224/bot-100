@@ -41,42 +41,13 @@ function initializeAppEnv() {
     if (appEnv.isLocal) {
         require('dotenv').load();
     }
-    if (appEnv.services.cloudantNoSQLDB) {
-        //        initCloudant(); No cloudant for the moment
-    } else {
-        console.error("No Cloudant service exists.");
-    }
     if (appEnv.services.conversation) {
         initConversation();
     } else {
         console.error("No Watson conversation service exists");
     }
 }
-// =====================================
-// CLOUDANT SETUP ======================
-// =====================================
-//var cloudantURL = process.env.CLOUDANT_URL;
-var dbname = "logs";
-var Logs;
 
-function initCloudant() {
-    var cloudantURL = appEnv.services.cloudantNoSQLDB[0].credentials.url || appEnv.getServiceCreds(CONVERSATION_NAME).url;
-    var Cloudant = require('cloudant')({
-        url: cloudantURL,
-        plugin: 'retry',
-        retryAttempts: 10,
-        retryTimeout: 500
-    });
-    // Create the accounts Logs if it doesn't exist
-    Cloudant.db.create(dbname, function (err, body) {
-        if (err) {
-            console.log("Database already exists: ", dbname);
-        } else {
-            console.log("New database created: ", dbname);
-        }
-    });
-    Logs = Cloudant.db.use(dbname);
-}
 // =====================================
 // CREATE THE SERVICE WRAPPER ==========
 // =====================================
