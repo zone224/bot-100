@@ -19,6 +19,8 @@ var vcapLocal = null;
 var appEnv = null;
 var appEnvOpts = {};
 var conversationWorkspace, conversation;
+
+
 fs.stat('./vcap-local.json', function (err, stat) {
     if (err && err.code === 'ENOENT') {
         // file does not exist
@@ -38,8 +40,10 @@ fs.stat('./vcap-local.json', function (err, stat) {
 // get the app environment from Cloud Foundry, defaulting to local VCAP
 function initializeAppEnv() {
     appEnv = cfenv.getAppEnv(appEnvOpts);
+
     if (appEnv.isLocal) {
         require('dotenv').load();
+        initConversation();
     }
     if (appEnv.services.conversation) {
         initConversation();
@@ -53,9 +57,7 @@ function initializeAppEnv() {
 // =====================================
 // Create the service wrapper
 function initConversation() {
-    var conversationCredentials = appEnv.getServiceCreds('ibm-100');
-    console.log(JSON.stringify(conversationCredentials));
-    console.log(conversationCredentials);
+    var conversationCredentials =  appEnv.services.conversation[0].credentials || appEnv.getServiceCreds('ibm-100'); // Get credentials from env. on bluemix, otherwise get it locally
     var conversationUsername =  conversationCredentials.username;
     var conversationPassword = conversationCredentials.password;
     var conversationURL = conversationCredentials.url;

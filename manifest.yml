@@ -1,8 +1,10 @@
 applications:
 - path: .
-  memory: 512M
+  memory: 128M
   instances: 1
   domain: mybluemix.net
-  name: ibm-100-demo
-  host: ibm-100-demo
-  disk_quota: 1024M
+  name: ibm-100-demo-rz
+  host: ibm-100-demo-rz
+  disk_quota: 256M
+  services:
+    - Conversation-qv
