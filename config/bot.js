@@ -11,7 +11,7 @@
  *
  */
 var watson = require('watson-developer-cloud');
-var CONVERSATION_NAME = "ibm-100"; // conversation name goes here.
+var CONVERSATION_NAME = "pizzaria"; // conversation name goes here.
 var cfenv = require('cfenv');
 var fs = require('fs');
 // load local VCAP configuration
@@ -84,9 +84,9 @@ function initConversation() {
                     conversationWorkspace = workspace.workspace_id;
                     console.log("Using Watson Conversation with username", conversationUsername, "and workspace", conversationWorkspace);
                 } else {
-                    console.log('Importing workspace from ./conversation/bot-100.json');
+                    console.log('Importing workspace from ./conversation/pizzaria.json');
                     // create the workspace
-                    const watsonWorkspace = JSON.parse(fs.readFileSync('./conversation/bot-100.json'));
+                    const watsonWorkspace = JSON.parse(fs.readFileSync('./conversation/pizzaria.json'));
                     // force the name to our expected name
                     watsonWorkspace.name = workspaceName;
                     conversation.createWorkspace(watsonWorkspace, (createErr, workspace) => {
