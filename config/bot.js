@@ -53,11 +53,12 @@ function initializeAppEnv() {
 // =====================================
 // Create the service wrapper
 function initConversation() {
-    var conversationCredentials = appEnv.getServiceCreds(CONVERSATION_NAME);
+    var conversationCredentials = appEnv.getServiceCreds('ibm-100');
+    console.log(JSON.stringify(conversationCredentials));
     console.log(conversationCredentials);
-    var conversationUsername = process.env.CONVERSATION_USERNAME || conversationCredentials.username;
-    var conversationPassword = process.env.CONVERSATION_PASSWORD || conversationCredentials.password;
-    var conversationURL = process.env.CONVERSATION_URL || conversationCredentials.url;
+    var conversationUsername =  conversationCredentials.username;
+    var conversationPassword = conversationCredentials.password;
+    var conversationURL = conversationCredentials.url;
     conversation = watson.conversation({
         url: conversationURL,
         username: conversationUsername,
